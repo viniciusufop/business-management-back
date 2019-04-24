@@ -1,8 +1,9 @@
 package br.com.vfsouzatecnologia.businessmanagementback.resource
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import br.com.vfsouzatecnologia.businessmanagementback.data.Company
+import br.com.vfsouzatecnologia.businessmanagementback.repository.CompanyRepository
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.web.bind.annotation.*
 
 /**
  * @author vinicius
@@ -13,10 +14,21 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 @RequestMapping("/company")
-class CompanyResource {
+class CompanyResource(
+        private val companyRepository: CompanyRepository) {
 
     @GetMapping
-    fun getAll(): String {
-        return ""
-    }
+    fun findAll() = companyRepository.findAll()
+
+    @GetMapping("/{cnpj}")
+    fun findByCnpj(@PathVariable cnpj: String): Company =
+            companyRepository.findByIdOrNull(cnpj) ?: throw IllegalArgumentException("Company not found")
+
+    @PostMapping
+    fun addCompany(@RequestBody company: Company): Company =
+            companyRepository.save(company)
+
+    @DeleteMapping("/{cnpj}")
+    fun delCompany(@PathVariable cnpj: String) =
+            companyRepository.deleteById(cnpj)
 }
