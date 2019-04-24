@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class BusinessManagementBackApplication
 
 fun main(args: Array<String>) {
-	runApplication<BusinessManagementBackApplication>(*args)
+    runApplication<BusinessManagementBackApplication>(*args)
 }
