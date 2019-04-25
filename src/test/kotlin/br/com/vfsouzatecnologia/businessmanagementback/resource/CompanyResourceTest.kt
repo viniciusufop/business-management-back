@@ -53,7 +53,7 @@ class CompanyResourceTest(@Autowired val mockMvc: MockMvc) {
     @Test
     fun `Assert find companies by cnpj`() {
         println(">> Assert find companies by cnpj")
-        every { companyRepository.findByIdOrNull(companyX.cnpj) } returns companyX
+        every { companyRepository.findByIdOrNull(eq(companyX.cnpj)) } returns companyX
 
         mockMvc.perform(get("/companies/${companyX.cnpj}").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk)
@@ -64,7 +64,7 @@ class CompanyResourceTest(@Autowired val mockMvc: MockMvc) {
     @Test
     fun `Assert insert new company`() {
         println(">> Assert insert new company")
-        every { companyRepository.save(companyX) } returns companyX
+        every { companyRepository.save(any<Company>()) } returns companyX
 
         mockMvc.perform(post("/companies")
                 .content(companyX.toString())

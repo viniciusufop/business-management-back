@@ -23,12 +23,4 @@ class Company(
              }
         """
     }
-
-    override fun equals(other: Any?): Boolean {
-        return when (other) {
-            null -> false
-            is Company -> other.cnpj == cnpj
-            else -> false
-        }
-    }
 }
