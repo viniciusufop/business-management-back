@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
  *
  */
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/companies")
 class CompanyResource(
         private val companyRepository: CompanyRepository) {
 
