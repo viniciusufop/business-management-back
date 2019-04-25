@@ -29,7 +29,7 @@ class CompanyResourceTest(@Autowired val mockMvc: MockMvc) {
 
     @MockkBean
     private lateinit var companyRepository: CompanyRepository
-
+    private val urlCompany = "/company"
     private val companyX = Company("70923128000102", "Empresa X")
     private val companyY = Company("88127559000128", "Empresa Y")
 
@@ -43,7 +43,7 @@ class CompanyResourceTest(@Autowired val mockMvc: MockMvc) {
         println(">> Assert find all companies")
         every { companyRepository.findAll() } returns listOf(companyX, companyY)
 
-        mockMvc.perform(get("/companies").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(urlCompany).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("\$.[0].cnpj").value(companyX.cnpj))
@@ -55,7 +55,7 @@ class CompanyResourceTest(@Autowired val mockMvc: MockMvc) {
         println(">> Assert find companies by cnpj")
         every { companyRepository.findByIdOrNull(eq(companyX.cnpj)) } returns companyX
 
-        mockMvc.perform(get("/companies/${companyX.cnpj}").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("$urlCompany/${companyX.cnpj}").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("\$.cnpj").value(companyX.cnpj))
@@ -66,7 +66,7 @@ class CompanyResourceTest(@Autowired val mockMvc: MockMvc) {
         println(">> Assert insert new company")
         every { companyRepository.save(any<Company>()) } returns companyX
 
-        mockMvc.perform(post("/companies")
+        mockMvc.perform(post(urlCompany)
                 .content(companyX.toString())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -80,7 +80,7 @@ class CompanyResourceTest(@Autowired val mockMvc: MockMvc) {
         println(">> Assert delete one company")
         every { companyRepository.deleteById(eq(companyX.cnpj)) } just Runs
 
-        mockMvc.perform(delete("/companies/${companyX.cnpj}")
+        mockMvc.perform(delete("$urlCompany/${companyX.cnpj}")
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk)
     }
