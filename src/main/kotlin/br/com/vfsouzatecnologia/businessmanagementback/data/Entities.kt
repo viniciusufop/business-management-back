@@ -14,4 +14,21 @@ import javax.persistence.Id
 class Company(
         @Id var cnpj: String,
         var name: String
-)
+) {
+    override fun toString(): String {
+        return """
+             {
+               "cnpj": "$cnpj",
+               "name": "$name"
+             }
+        """
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return when (other) {
+            null -> false
+            is Company -> other.cnpj == cnpj
+            else -> false
+        }
+    }
+}
